@@ -24193,6 +24193,14 @@ var _session_form_container = __webpack_require__(148);
 
 var _session_form_container2 = _interopRequireDefault(_session_form_container);
 
+var _main = __webpack_require__(225);
+
+var _main2 = _interopRequireDefault(_main);
+
+var _browse_container = __webpack_require__(222);
+
+var _browse_container2 = _interopRequireDefault(_browse_container);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // react router
@@ -24234,7 +24242,12 @@ var Root = function Root(_ref) {
         { path: '/' },
         _react2.default.createElement(_reactRouter.IndexRoute, { onEnter: _redirect }),
         _react2.default.createElement(_reactRouter.Route, { path: '/login', component: _session_form_container2.default, onEnter: _redirectIfLoggedIn }),
-        _react2.default.createElement(_reactRouter.Route, { path: '/signup', component: _session_form_container2.default, onEnter: _redirectIfLoggedIn })
+        _react2.default.createElement(_reactRouter.Route, { path: '/signup', component: _session_form_container2.default, onEnter: _redirectIfLoggedIn }),
+        _react2.default.createElement(
+          _reactRouter.Route,
+          { path: '/main', component: _main2.default, onEnter: _ensureLoggedIn },
+          _react2.default.createElement(_reactRouter.Route, { path: '/browse', component: _browse_container2.default })
+        )
       )
     )
   );
@@ -24242,10 +24255,7 @@ var Root = function Root(_ref) {
 
 exports.default = Root;
 
-// <Route path="/main" component={MainContainer} onEnter={_ensureLoggedIn}>
-//   <Route path="/browse" component={BrowseContainer} />
-//   <Route path="/books/:id" component={BookDetailContainer} />
-// </Route>
+// <Route path="/books/:id" component={BookDetailContainer} />
 
 /***/ }),
 /* 98 */
@@ -31641,6 +31651,122 @@ var thunk = createThunkMiddleware();
 thunk.withExtraArgument = createThunkMiddleware;
 
 exports['default'] = thunk;
+
+/***/ }),
+/* 222 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(50);
+
+var _browse = __webpack_require__(223);
+
+var _browse2 = _interopRequireDefault(_browse);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps() {
+  return {};
+};
+
+var mapDispatchToProps = function mapDispatchToProps() {
+  return {};
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_browse2.default);
+
+/***/ }),
+/* 223 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Browse = function Browse() {
+  return _react2.default.createElement(
+    'p',
+    null,
+    'YO'
+  );
+};
+
+exports.default = Browse;
+
+/***/ }),
+/* 224 */,
+/* 225 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _header = __webpack_require__(226);
+
+var _header2 = _interopRequireDefault(_header);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Main = function Main(props) {
+  return _react2.default.createElement(
+    'section',
+    { id: 'main' },
+    _react2.default.createElement(_header2.default, null),
+    props.children
+  );
+};
+
+exports.default = Main;
+
+/***/ }),
+/* 226 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header() {
+  return _react2.default.createElement(
+    'p',
+    null,
+    'YO'
+  );
+};
+
+exports.default = Header;
 
 /***/ })
 /******/ ]);
