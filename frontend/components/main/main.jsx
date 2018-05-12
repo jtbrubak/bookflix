@@ -1,10 +1,10 @@
 import React from 'react';
-import Header from '../header/header';
+import HeaderContainer from '../header/header_container';
 
 const Main = (props) => {
   return (
     <section id="main">
-      <Header />
+      <HeaderContainer />
       {props.children}
     </section>
   )

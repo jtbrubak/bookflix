@@ -31724,9 +31724,9 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _header = __webpack_require__(226);
+var _header_container = __webpack_require__(227);
 
-var _header2 = _interopRequireDefault(_header);
+var _header_container2 = _interopRequireDefault(_header_container);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -31734,7 +31734,7 @@ var Main = function Main(props) {
   return _react2.default.createElement(
     'section',
     { id: 'main' },
-    _react2.default.createElement(_header2.default, null),
+    _react2.default.createElement(_header_container2.default, null),
     props.children
   );
 };
@@ -31756,17 +31756,78 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = __webpack_require__(56);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Header = function Header() {
+var Header = function Header(props) {
+
+  var handleClick = function handleClick() {
+    props.logout().then(function () {
+      return location.reload(true);
+    });
+  };
+
   return _react2.default.createElement(
-    'p',
+    'header',
     null,
-    'YO'
+    _react2.default.createElement(
+      _reactRouter.Link,
+      { to: '/browse' },
+      'BOOKFLIX'
+    ),
+    _react2.default.createElement(
+      'p',
+      null,
+      props.username
+    ),
+    _react2.default.createElement(
+      'button',
+      { onClick: handleClick },
+      'Log Out'
+    )
   );
 };
 
 exports.default = Header;
+
+/***/ }),
+/* 227 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(50);
+
+var _session_actions = __webpack_require__(68);
+
+var _header = __webpack_require__(226);
+
+var _header2 = _interopRequireDefault(_header);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref) {
+  var session = _ref.session;
+  return {
+    username: session.currentUser.username
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    logout: function logout() {
+      return dispatch((0, _session_actions.logout)());
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_header2.default);
 
 /***/ })
 /******/ ]);
