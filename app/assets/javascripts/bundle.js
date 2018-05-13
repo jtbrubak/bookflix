@@ -32276,28 +32276,41 @@ var BookDetail = function (_React$Component) {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
-        "section",
+        "div",
         { id: "book-detail" },
-        _react2.default.createElement("img", { src: this.props.bookDetail.picture_url }),
         _react2.default.createElement(
-          "span",
-          null,
-          this.props.bookDetail.title
+          "div",
+          { id: "book-detail-left" },
+          _react2.default.createElement("img", { src: this.props.bookDetail.picture_url })
         ),
         _react2.default.createElement(
-          "span",
-          null,
-          this.props.bookDetail.author
-        ),
-        _react2.default.createElement(
-          "span",
-          null,
-          this.props.bookDetail.year
-        ),
-        _react2.default.createElement(
-          "button",
-          null,
-          "READ"
+          "div",
+          { id: "book-detail-right" },
+          _react2.default.createElement(
+            "span",
+            null,
+            this.props.bookDetail.title
+          ),
+          _react2.default.createElement(
+            "span",
+            null,
+            this.props.bookDetail.author
+          ),
+          _react2.default.createElement(
+            "span",
+            null,
+            this.props.bookDetail.year
+          ),
+          _react2.default.createElement(
+            "p",
+            null,
+            this.props.bookDetail.description
+          ),
+          _react2.default.createElement(
+            "a",
+            { href: this.props.bookDetail.pdf_link },
+            "READ"
+          )
         )
       );
     }
