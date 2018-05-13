@@ -31832,19 +31832,27 @@ var Header = function Header(props) {
     'header',
     null,
     _react2.default.createElement(
-      _reactRouter.Link,
-      { to: '/browse' },
-      'BOOKFLIX'
+      'div',
+      { id: 'header-left' },
+      _react2.default.createElement(
+        _reactRouter.Link,
+        { to: '/browse' },
+        'BOOKFLIX'
+      )
     ),
     _react2.default.createElement(
-      'p',
-      null,
-      props.username
-    ),
-    _react2.default.createElement(
-      'button',
-      { onClick: handleClick },
-      'Log Out'
+      'div',
+      { id: 'header-right' },
+      _react2.default.createElement(
+        'p',
+        null,
+        props.username
+      ),
+      _react2.default.createElement(
+        'button',
+        { onClick: handleClick },
+        'Log Out'
+      )
     )
   );
 };
@@ -31924,44 +31932,72 @@ var Carousel = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).call(this, props));
 
-    _this.state = { booksInView: [] };
+    _this.state = { booksInView: [], startPoint: 0 };
+    _this.scrollLeft = _this.scrollLeft.bind(_this);
+    _this.scrollRight = _this.scrollRight.bind(_this);
     return _this;
   }
 
   _createClass(Carousel, [{
+    key: 'scrollLeft',
+    value: function scrollLeft() {
+      var newStartPoint = this.state.startPoint - 5;
+      if (newStartPoint < 0) {
+        newStartPoint = this.props.books.length - 5;
+      }
+      var newBooks = this.props.books.slice(newStartPoint, newStartPoint + 5);
+      this.setState({ booksInView: newBooks, startPoint: newStartPoint });
+    }
+  }, {
+    key: 'scrollRight',
+    value: function scrollRight() {
+      var newStartPoint = this.state.startPoint + 5;
+      if (newStartPoint >= this.props.books.length) {
+        newStartPoint = 0;
+      }
+      var newBooks = this.props.books.slice(newStartPoint, newStartPoint + 5);
+      this.setState({ booksInView: newBooks, startPoint: newStartPoint });
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
         'div',
         { className: 'carousel' },
         _react2.default.createElement(
-          'p',
+          'span',
           null,
           this.props.title
         ),
         _react2.default.createElement(
-          'ul',
-          null,
-          this.state.booksInView.map(function (book, i) {
-            return _react2.default.createElement(
-              'li',
-              { className: 'carousel-element', key: i },
-              _react2.default.createElement(
-                _reactRouter.Link,
-                { to: '/books/' + book.id },
-                _react2.default.createElement('img', { src: book.picture_url })
-              ),
-              _react2.default.createElement(
-                _reactRouter.Link,
-                { to: '/books/' + book.id },
+          'div',
+          { className: 'carousel-main' },
+          _react2.default.createElement('i', { className: 'fa fa-chevron-circle-left', onClick: this.scrollLeft }),
+          _react2.default.createElement(
+            'ul',
+            null,
+            this.state.booksInView.map(function (book, i) {
+              return _react2.default.createElement(
+                'li',
+                { className: 'carousel-element', key: i },
                 _react2.default.createElement(
-                  'p',
-                  null,
-                  book.title
+                  _reactRouter.Link,
+                  { to: '/books/' + book.id },
+                  _react2.default.createElement('img', { src: book.picture_url })
+                ),
+                _react2.default.createElement(
+                  _reactRouter.Link,
+                  { to: '/books/' + book.id },
+                  _react2.default.createElement(
+                    'span',
+                    null,
+                    book.title
+                  )
                 )
-              )
-            );
-          })
+              );
+            })
+          ),
+          _react2.default.createElement('i', { className: 'fa fa-chevron-circle-right', onClick: this.scrollRight })
         )
       );
     }

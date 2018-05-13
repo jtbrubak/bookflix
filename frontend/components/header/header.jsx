@@ -9,9 +9,13 @@ const Header = (props) => {
 
   return (
     <header>
-      <Link to={'/browse'}>BOOKFLIX</Link>
-      <p>{props.username}</p>
-      <button onClick={handleClick}>Log Out</button>
+      <div id="header-left">
+        <Link to={'/browse'}>BOOKFLIX</Link>
+      </div>
+      <div id="header-right">
+        <p>{props.username}</p>
+        <button onClick={handleClick}>Log Out</button>
+      </div>
     </header>
   );
 }

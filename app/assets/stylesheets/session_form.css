@@ -1,20 +1,9 @@
-html {
+.login-form-container {
   height: 100%;
-  width: 100%;
-}
-
-body {
-  height: 100%;
-  width: 100%;
-  background: black;
+  align-self: center;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.login-form-container {
-  display: flex;
-  align-items: center;
   flex-direction: column;
 }
 
