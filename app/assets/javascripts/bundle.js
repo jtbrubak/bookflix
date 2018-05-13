@@ -29404,10 +29404,15 @@ var _session_reducer = __webpack_require__(153);
 
 var _session_reducer2 = _interopRequireDefault(_session_reducer);
 
+var _browse_reducer = __webpack_require__(231);
+
+var _browse_reducer2 = _interopRequireDefault(_browse_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RootReducer = (0, _redux.combineReducers)({
-  session: _session_reducer2.default
+  session: _session_reducer2.default,
+  browse: _browse_reducer2.default
 });
 
 exports.default = RootReducer;
@@ -31665,18 +31670,27 @@ Object.defineProperty(exports, "__esModule", {
 
 var _reactRedux = __webpack_require__(50);
 
+var _browse_actions = __webpack_require__(229);
+
 var _browse = __webpack_require__(223);
 
 var _browse2 = _interopRequireDefault(_browse);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var mapStateToProps = function mapStateToProps() {
-  return {};
+var mapStateToProps = function mapStateToProps(_ref) {
+  var browse = _ref.browse;
+  return {
+    browse: browse
+  };
 };
 
-var mapDispatchToProps = function mapDispatchToProps() {
-  return {};
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    fetchBooks: function fetchBooks() {
+      return dispatch((0, _browse_actions.fetchBooks)());
+    }
+  };
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_browse2.default);
@@ -31692,19 +31706,51 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _carousel = __webpack_require__(228);
+
+var _carousel2 = _interopRequireDefault(_carousel);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Browse = function Browse() {
-  return _react2.default.createElement(
-    'p',
-    null,
-    'YO'
-  );
-};
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Browse = function (_React$Component) {
+  _inherits(Browse, _React$Component);
+
+  function Browse(props) {
+    _classCallCheck(this, Browse);
+
+    return _possibleConstructorReturn(this, (Browse.__proto__ || Object.getPrototypeOf(Browse)).call(this, props));
+  }
+
+  _createClass(Browse, [{
+    key: 'componentWillMount',
+    value: function componentWillMount() {
+      this.props.fetchBooks();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'section',
+        { id: 'browse' },
+        _react2.default.createElement(_carousel2.default, { title: "Featured Books", books: this.props.browse.books })
+      );
+    }
+  }]);
+
+  return Browse;
+}(_react2.default.Component);
 
 exports.default = Browse;
 
@@ -31828,6 +31874,177 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
 };
 
 exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_header2.default);
+
+/***/ }),
+/* 228 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Carousel = function (_React$Component) {
+  _inherits(Carousel, _React$Component);
+
+  function Carousel(props) {
+    _classCallCheck(this, Carousel);
+
+    var _this = _possibleConstructorReturn(this, (Carousel.__proto__ || Object.getPrototypeOf(Carousel)).call(this, props));
+
+    _this.state = { booksInView: [] };
+    return _this;
+  }
+
+  _createClass(Carousel, [{
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        { className: "carousel" },
+        _react2.default.createElement(
+          "p",
+          null,
+          this.props.title
+        ),
+        _react2.default.createElement(
+          "ul",
+          null,
+          this.state.booksInView.map(function (book, i) {
+            return _react2.default.createElement(
+              "li",
+              { className: "carousel-element", key: i },
+              _react2.default.createElement("img", { src: book.picture_url }),
+              _react2.default.createElement(
+                "p",
+                null,
+                book.title
+              )
+            );
+          })
+        )
+      );
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps) {
+      return { booksInView: nextProps.books.slice(0, 5) };
+    }
+  }]);
+
+  return Carousel;
+}(_react2.default.Component);
+
+exports.default = Carousel;
+
+/***/ }),
+/* 229 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.receiveBooks = exports.fetchBooks = exports.RECEIVE_BOOKS = undefined;
+
+var _browse_api_util = __webpack_require__(230);
+
+var APIUtil = _interopRequireWildcard(_browse_api_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var RECEIVE_BOOKS = exports.RECEIVE_BOOKS = "RECEIVE_BOOKS";
+
+var fetchBooks = exports.fetchBooks = function fetchBooks() {
+  return function (dispatch) {
+    return APIUtil.fetchBooks().then(function (books) {
+      return dispatch(receiveBooks(books));
+    });
+  };
+};
+
+var receiveBooks = exports.receiveBooks = function receiveBooks(books) {
+  return {
+    type: RECEIVE_BOOKS,
+    books: books
+  };
+};
+
+/***/ }),
+/* 230 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var fetchBooks = exports.fetchBooks = function fetchBooks() {
+  return $.ajax({
+    method: 'GET',
+    url: '/api/books'
+  });
+};
+
+/***/ }),
+/* 231 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _browse_actions = __webpack_require__(229);
+
+var _merge = __webpack_require__(154);
+
+var _merge2 = _interopRequireDefault(_merge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var defaultState = Object.freeze({
+  books: []
+});
+
+var BrowseReducer = function BrowseReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : defaultState;
+  var action = arguments[1];
+
+  Object.freeze(state);
+  switch (action.type) {
+    case _browse_actions.RECEIVE_BOOKS:
+      var books = action.books;
+      return (0, _merge2.default)({}, defaultState, {
+        books: books
+      });
+    default:
+      return state;
+  }
+};
+
+exports.default = BrowseReducer;
 
 /***/ })
 /******/ ]);

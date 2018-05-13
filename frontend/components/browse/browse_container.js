@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
+import { fetchBooks } from '../../actions/browse_actions';
 import Browse from './browse';
 
-
-const mapStateToProps = () => ({
-
+const mapStateToProps = ({ browse }) => ({
+  browse
 });
 
-const mapDispatchToProps = () => ({
-
+const mapDispatchToProps = (dispatch) => ({
+  fetchBooks: () => dispatch(fetchBooks())
 });
 
 export default connect(

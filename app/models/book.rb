@@ -1,5 +1,5 @@
 class Book < ActiveRecord::Base
-  validates :title, :artist_id, :year, presence: true
+  validates :title, :author_id, :year, :picture_url, presence: true
   has_many :ratings,
     class_name: 'BookRating',
     primary_key: :id,
