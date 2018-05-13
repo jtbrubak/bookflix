@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router';
 
 class Carousel extends React.Component {
 
@@ -19,8 +20,12 @@ class Carousel extends React.Component {
           {
             this.state.booksInView.map((book, i) => (
               <li className="carousel-element" key={i}>
-                <img src={book.picture_url} />
-                <p>{book.title}</p>
+                <Link to={`/books/${book.id}`}>
+                  <img src={book.picture_url} />
+                </Link>
+                <Link to={`/books/${book.id}`}>
+                  <p>{book.title}</p>
+                </Link>
               </li>
             ))
           }

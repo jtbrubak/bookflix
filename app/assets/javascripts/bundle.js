@@ -24201,9 +24201,12 @@ var _browse_container = __webpack_require__(222);
 
 var _browse_container2 = _interopRequireDefault(_browse_container);
 
+var _book_detail_container = __webpack_require__(235);
+
+var _book_detail_container2 = _interopRequireDefault(_book_detail_container);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-// react router
 var Root = function Root(_ref) {
   var store = _ref.store;
 
@@ -24246,16 +24249,16 @@ var Root = function Root(_ref) {
         _react2.default.createElement(
           _reactRouter.Route,
           { path: '/main', component: _main2.default, onEnter: _ensureLoggedIn },
-          _react2.default.createElement(_reactRouter.Route, { path: '/browse', component: _browse_container2.default })
+          _react2.default.createElement(_reactRouter.Route, { path: '/browse', component: _browse_container2.default }),
+          _react2.default.createElement(_reactRouter.Route, { path: '/books/:id', component: _book_detail_container2.default })
         )
       )
     )
   );
 };
 
+// react router
 exports.default = Root;
-
-// <Route path="/books/:id" component={BookDetailContainer} />
 
 /***/ }),
 /* 98 */
@@ -29283,7 +29286,7 @@ var SessionForm = function (_React$Component) {
 				return _react2.default.createElement(
 					'button',
 					{ onClick: this.handleGuestLogin },
-					'GUEST LOGIN'
+					'Guest Login'
 				);
 			}
 		}
@@ -29307,9 +29310,15 @@ var SessionForm = function (_React$Component) {
 	}, {
 		key: 'render',
 		value: function render() {
+			var formType = this.props.formType.charAt(0).toUpperCase() + this.props.formType.slice(1);
 			return _react2.default.createElement(
 				'div',
-				{ className: 'login-form-container fullscreen' },
+				{ className: 'login-form-container' },
+				_react2.default.createElement(
+					'span',
+					null,
+					'BOOKFLIX'
+				),
 				_react2.default.createElement(
 					'form',
 					{ onSubmit: this.handleSubmit, className: 'login-form-box' },
@@ -29321,7 +29330,7 @@ var SessionForm = function (_React$Component) {
 						_react2.default.createElement(
 							'label',
 							{ className: 'login-form-label' },
-							' Username',
+							'Username',
 							_react2.default.createElement('br', null),
 							_react2.default.createElement('input', { type: 'text',
 								value: this.state.username,
@@ -29333,7 +29342,7 @@ var SessionForm = function (_React$Component) {
 						_react2.default.createElement(
 							'label',
 							{ className: 'login-form-label' },
-							' Password',
+							'Password',
 							_react2.default.createElement('br', null),
 							_react2.default.createElement('input', { type: 'password',
 								value: this.state.password,
@@ -29342,7 +29351,7 @@ var SessionForm = function (_React$Component) {
 								className: 'login-input' })
 						),
 						_react2.default.createElement('br', null),
-						_react2.default.createElement('input', { type: 'submit', value: this.props.formType.toUpperCase() }),
+						_react2.default.createElement('input', { className: 'login-submit', type: 'submit', value: formType }),
 						_react2.default.createElement('br', null),
 						this.renderGuestLogin(),
 						this.navLink()
@@ -29408,11 +29417,16 @@ var _browse_reducer = __webpack_require__(231);
 
 var _browse_reducer2 = _interopRequireDefault(_browse_reducer);
 
+var _book_reducer = __webpack_require__(232);
+
+var _book_reducer2 = _interopRequireDefault(_book_reducer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var RootReducer = (0, _redux.combineReducers)({
   session: _session_reducer2.default,
-  browse: _browse_reducer2.default
+  browse: _browse_reducer2.default,
+  bookDetail: _book_reducer2.default
 });
 
 exports.default = RootReducer;
@@ -31892,6 +31906,8 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _reactRouter = __webpack_require__(56);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -31913,28 +31929,36 @@ var Carousel = function (_React$Component) {
   }
 
   _createClass(Carousel, [{
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "div",
-        { className: "carousel" },
+        'div',
+        { className: 'carousel' },
         _react2.default.createElement(
-          "p",
+          'p',
           null,
           this.props.title
         ),
         _react2.default.createElement(
-          "ul",
+          'ul',
           null,
           this.state.booksInView.map(function (book, i) {
             return _react2.default.createElement(
-              "li",
-              { className: "carousel-element", key: i },
-              _react2.default.createElement("img", { src: book.picture_url }),
+              'li',
+              { className: 'carousel-element', key: i },
               _react2.default.createElement(
-                "p",
-                null,
-                book.title
+                _reactRouter.Link,
+                { to: '/books/' + book.id },
+                _react2.default.createElement('img', { src: book.picture_url })
+              ),
+              _react2.default.createElement(
+                _reactRouter.Link,
+                { to: '/books/' + book.id },
+                _react2.default.createElement(
+                  'p',
+                  null,
+                  book.title
+                )
               )
             );
           })
@@ -31942,7 +31966,7 @@ var Carousel = function (_React$Component) {
       );
     }
   }], [{
-    key: "getDerivedStateFromProps",
+    key: 'getDerivedStateFromProps',
     value: function getDerivedStateFromProps(nextProps) {
       return { booksInView: nextProps.books.slice(0, 5) };
     }
@@ -32045,6 +32069,208 @@ var BrowseReducer = function BrowseReducer() {
 };
 
 exports.default = BrowseReducer;
+
+/***/ }),
+/* 232 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _book_actions = __webpack_require__(233);
+
+var bookDefault = {
+  id: undefined,
+  title: undefined,
+  author: undefined,
+  picture_url: undefined,
+  year: undefined
+};
+
+var BookReducer = function BookReducer() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var action = arguments[1];
+
+  Object.freeze(state);
+  switch (action.type) {
+    case _book_actions.RECEIVE_BOOK_DETAIL:
+      return action.book;
+    default:
+      return state;
+  }
+};
+
+exports.default = BookReducer;
+
+/***/ }),
+/* 233 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.receiveBookDetail = exports.fetchBookDetail = exports.RECEIVE_BOOK_DETAIL = undefined;
+
+var _books_api_util = __webpack_require__(234);
+
+var APIUtil = _interopRequireWildcard(_books_api_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var RECEIVE_BOOK_DETAIL = exports.RECEIVE_BOOK_DETAIL = "RECEIVE_BOOK_DETAIL";
+
+var fetchBookDetail = exports.fetchBookDetail = function fetchBookDetail(id) {
+  return function (dispatch) {
+    return APIUtil.fetchBookDetail(id).then(function (book) {
+      return dispatch(receiveBookDetail(book));
+    });
+  };
+};
+
+var receiveBookDetail = exports.receiveBookDetail = function receiveBookDetail(book) {
+  return {
+    type: RECEIVE_BOOK_DETAIL,
+    book: book
+  };
+};
+
+/***/ }),
+/* 234 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var fetchBookDetail = exports.fetchBookDetail = function fetchBookDetail(id) {
+  return $.ajax({
+    method: 'GET',
+    url: '/api/books/' + id
+  });
+};
+
+/***/ }),
+/* 235 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(50);
+
+var _book_actions = __webpack_require__(233);
+
+var _book_detail = __webpack_require__(236);
+
+var _book_detail2 = _interopRequireDefault(_book_detail);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref, ownProps) {
+  var bookDetail = _ref.bookDetail;
+  return {
+    id: parseInt(ownProps.params.id),
+    bookDetail: bookDetail
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    fetchBookDetail: function fetchBookDetail(id) {
+      return dispatch((0, _book_actions.fetchBookDetail)(id));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_book_detail2.default);
+
+/***/ }),
+/* 236 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var BookDetail = function (_React$Component) {
+  _inherits(BookDetail, _React$Component);
+
+  function BookDetail(props) {
+    _classCallCheck(this, BookDetail);
+
+    return _possibleConstructorReturn(this, (BookDetail.__proto__ || Object.getPrototypeOf(BookDetail)).call(this, props));
+  }
+
+  _createClass(BookDetail, [{
+    key: "componentWillMount",
+    value: function componentWillMount() {
+      this.props.fetchBookDetail(this.props.id);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "section",
+        { id: "book-detail" },
+        _react2.default.createElement("img", { src: this.props.bookDetail.picture_url }),
+        _react2.default.createElement(
+          "span",
+          null,
+          this.props.bookDetail.title
+        ),
+        _react2.default.createElement(
+          "span",
+          null,
+          this.props.bookDetail.author
+        ),
+        _react2.default.createElement(
+          "span",
+          null,
+          this.props.bookDetail.year
+        ),
+        _react2.default.createElement(
+          "button",
+          null,
+          "READ"
+        )
+      );
+    }
+  }]);
+
+  return BookDetail;
+}(_react2.default.Component);
+
+exports.default = BookDetail;
 
 /***/ })
 /******/ ]);

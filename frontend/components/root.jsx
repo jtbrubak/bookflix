@@ -6,6 +6,7 @@ import { Router, Route, IndexRoute, hashHistory } from 'react-router';
 import SessionFormContainer from './session_form/session_form_container';
 import Main from './main/main';
 import BrowseContainer from './browse/browse_container';
+import BookDetailContainer from './book_detail/book_detail_container';
 
 const Root = ({ store }) => {
 
@@ -41,6 +42,7 @@ const Root = ({ store }) => {
           <Route path="/signup" component={SessionFormContainer} onEnter={_redirectIfLoggedIn} />
           <Route path="/main" component={Main} onEnter={_ensureLoggedIn}>
             <Route path="/browse" component={BrowseContainer} />
+            <Route path="/books/:id" component={BookDetailContainer} />
           </Route>
         </Route>
       </Router>
@@ -49,5 +51,3 @@ const Root = ({ store }) => {
 };
 
 export default Root;
-
-// <Route path="/books/:id" component={BookDetailContainer} />

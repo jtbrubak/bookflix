@@ -61,7 +61,7 @@ class SessionForm extends React.Component {
 
   renderGuestLogin() {
     if (this.props.formType === "login") {
-      return <button onClick={this.handleGuestLogin}>GUEST LOGIN</button>;
+      return <button onClick={this.handleGuestLogin}>Guest Login</button>;
     }
   }
 
@@ -78,13 +78,15 @@ class SessionForm extends React.Component {
 	}
 
 	render() {
+		var formType = this.props.formType.charAt(0).toUpperCase() + this.props.formType.slice(1);
 		return (
-			<div className="login-form-container fullscreen">
+			<div className="login-form-container">
+				<span>BOOKFLIX</span>
 				<form onSubmit={this.handleSubmit} className="login-form-box">
 					{this.renderErrors()}
 					<div className="login-form">
 						<br/>
-						<label className="login-form-label"> Username<br/>
+						<label className="login-form-label">Username<br/>
 							<input type="text"
 								value={this.state.username}
                 placeholder="Username"
@@ -92,7 +94,7 @@ class SessionForm extends React.Component {
 								className="login-input" />
 						</label>
 						<br/>
-						<label className="login-form-label"> Password<br/>
+						<label className="login-form-label">Password<br/>
 							<input type="password"
 								value={this.state.password}
                 placeholder="Password"
@@ -100,7 +102,7 @@ class SessionForm extends React.Component {
 								className="login-input" />
 						</label>
 						<br/>
-						<input type="submit" value={this.props.formType.toUpperCase()} />
+						<input className="login-submit" type="submit" value={formType} />
             <br/>
             {this.renderGuestLogin()}
             {this.navLink()}
