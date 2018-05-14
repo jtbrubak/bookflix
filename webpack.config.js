@@ -23,12 +23,5 @@ module.exports = {
   devtool: 'source-map',
   resolve: {
     extensions: ['.js', '.jsx', '*']
-  },
-  engines: {
-    node: "8.11.1",
-    npm: "5.6.0"
-  },
-  scripts: {
-    postinstall: "webpack"
   }
 };
