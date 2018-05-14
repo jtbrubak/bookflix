@@ -1,5 +1,5 @@
 import React from 'react';
-import Thumbs from '../thumbs/thumbs';
+import ThumbsContainer from '../thumbs/thumbs_container';
 
 class BookDetail extends React.Component {
 
@@ -9,21 +9,23 @@ class BookDetail extends React.Component {
 
   componentWillMount() {
     this.props.fetchBookDetail(this.props.id);
+    this.props.fetchRating({ book_id: this.props.id,
+      user_id: this.props.currentUser.id });
   }
 
   render() {
     return (
       <div id="book-detail">
         <div id="book-detail-left">
-          <img src={this.props.bookDetail.picture_url} />
+          <img src={this.props.bookDetail.book.picture_url} />
         </div>
         <div id="book-detail-right">
-          <span>{this.props.bookDetail.title}</span>
-          <span>{this.props.bookDetail.author}</span>
-          <span>{this.props.bookDetail.year}</span>
-          <p>{this.props.bookDetail.description}</p>
-          <a href={this.props.bookDetail.pdf_link}>READ</a>
-          <Thumbs bookId={this.props.id} user={this.props.currentUser} />
+          <span>{this.props.bookDetail.book.title}</span>
+          <span>{this.props.bookDetail.book.author}</span>
+          <span>{this.props.bookDetail.book.year}</span>
+          <p>{this.props.bookDetail.book.description}</p>
+          <a href={this.props.bookDetail.book.pdf_link}>READ</a>
+          <ThumbsContainer />
         </div>
       </div>
     );

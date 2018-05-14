@@ -1,4 +1,5 @@
 export const createRating = (rating) => {
+  debugger
   return $.ajax({
     method: 'POST',
     url: '/api/book_ratings',
@@ -6,11 +7,11 @@ export const createRating = (rating) => {
   });
 };
 
-export const updateRating = (rating) => {
+export const updateRating = (params) => {
   return $.ajax({
     method: 'PUT',
-    url: `/api/book_ratings/${rating.id}`,
-    data: rating
+    url: `/api/book_ratings/${params.id}`,
+    data: params
   });
 }
 
@@ -20,3 +21,11 @@ export const deleteRating = (id) => {
     url: `/api/book_ratings/${id}`
   });
 };
+
+export const fetchRating = (params) => {
+  return $.ajax({
+    method: 'GET',
+    url: '/api/book_ratings',
+    data: params
+  })
+}

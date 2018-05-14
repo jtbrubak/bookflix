@@ -32119,22 +32119,36 @@ Object.defineProperty(exports, "__esModule", {
 
 var _book_actions = __webpack_require__(233);
 
+var _rating_actions = __webpack_require__(238);
+
+var _merge = __webpack_require__(154);
+
+var _merge2 = _interopRequireDefault(_merge);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 var bookDefault = {
-  id: undefined,
-  title: undefined,
-  author: undefined,
-  picture_url: undefined,
-  year: undefined
+  book: {},
+  bookRating: {
+    rating: null,
+    id: null
+  }
 };
 
 var BookReducer = function BookReducer() {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : bookDefault;
   var action = arguments[1];
 
   Object.freeze(state);
   switch (action.type) {
     case _book_actions.RECEIVE_BOOK_DETAIL:
-      return action.book;
+      var newState = (0, _merge2.default)({}, state);
+      newState.book = action.book;
+      return newState;
+    case _rating_actions.RECEIVE_RATING:
+      var newState = (0, _merge2.default)({}, state);
+      newState.bookRating = action.rating;
+      return newState;
     default:
       return state;
   }
@@ -32209,6 +32223,8 @@ var _reactRedux = __webpack_require__(50);
 
 var _book_actions = __webpack_require__(233);
 
+var _rating_actions = __webpack_require__(238);
+
 var _book_detail = __webpack_require__(236);
 
 var _book_detail2 = _interopRequireDefault(_book_detail);
@@ -32229,6 +32245,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     fetchBookDetail: function fetchBookDetail(id) {
       return dispatch((0, _book_actions.fetchBookDetail)(id));
+    },
+    fetchRating: function fetchRating(params) {
+      return dispatch((0, _rating_actions.fetchRating)(params));
     }
   };
 };
@@ -32252,9 +32271,9 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
-var _thumbs = __webpack_require__(237);
+var _thumbs_container = __webpack_require__(240);
 
-var _thumbs2 = _interopRequireDefault(_thumbs);
+var _thumbs_container2 = _interopRequireDefault(_thumbs_container);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -32277,6 +32296,8 @@ var BookDetail = function (_React$Component) {
     key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.fetchBookDetail(this.props.id);
+      this.props.fetchRating({ book_id: this.props.id,
+        user_id: this.props.currentUser.id });
     }
   }, {
     key: 'render',
@@ -32287,7 +32308,7 @@ var BookDetail = function (_React$Component) {
         _react2.default.createElement(
           'div',
           { id: 'book-detail-left' },
-          _react2.default.createElement('img', { src: this.props.bookDetail.picture_url })
+          _react2.default.createElement('img', { src: this.props.bookDetail.book.picture_url })
         ),
         _react2.default.createElement(
           'div',
@@ -32295,29 +32316,29 @@ var BookDetail = function (_React$Component) {
           _react2.default.createElement(
             'span',
             null,
-            this.props.bookDetail.title
+            this.props.bookDetail.book.title
           ),
           _react2.default.createElement(
             'span',
             null,
-            this.props.bookDetail.author
+            this.props.bookDetail.book.author
           ),
           _react2.default.createElement(
             'span',
             null,
-            this.props.bookDetail.year
+            this.props.bookDetail.book.year
           ),
           _react2.default.createElement(
             'p',
             null,
-            this.props.bookDetail.description
+            this.props.bookDetail.book.description
           ),
           _react2.default.createElement(
             'a',
-            { href: this.props.bookDetail.pdf_link },
+            { href: this.props.bookDetail.book.pdf_link },
             'READ'
           ),
-          _react2.default.createElement(_thumbs2.default, { bookId: this.props.id, user: this.props.currentUser })
+          _react2.default.createElement(_thumbs_container2.default, null)
         )
       );
     }
@@ -32338,7 +32359,6 @@ exports.default = BookDetail;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Thumbs = undefined;
 
 var _react = __webpack_require__(1);
 
@@ -32346,17 +32366,202 @@ var _react2 = _interopRequireDefault(_react);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var Thumbs = exports.Thumbs = function Thumbs(props) {
+var Thumbs = function Thumbs(props) {
+  var rating_ids = { 'up': 1, 'down': 2 };
+
+  var checkRating = function checkRating(direction) {
+    var classString = 'fa fa-thumbs-' + direction;
+    classString += props.bookRating.rating === rating_ids[direction] ? ' enabled' : '';
+    return classString;
+  };
+
+  var buildParams = function buildParams(direction) {
+    return {
+      book_rating: {
+        book_id: props.bookId,
+        user_id: props.userId,
+        rating: rating_ids[direction]
+      }
+    };
+  };
+
+  var toggleRating = function toggleRating(direction) {
+    if (props.bookRating.rating === null) {
+      var params = buildParams(direction);
+      props.createRating(params);
+    } else if (props.bookRating.rating === rating_ids[direction]) {
+      props.deleteRating(props.bookRating.id);
+    } else {
+      debugger;
+      var params = buildParams(direction);
+      params.id = props.bookRating.id;
+      props.updateRating(params);
+    }
+  };
 
   return _react2.default.createElement(
-    "div",
-    { className: "thumbs" },
-    _react2.default.createElement("i", { className: "fa fa-thumbs-up" }),
-    _react2.default.createElement("i", { className: "fa fa-thumbs-down" })
+    'div',
+    { className: 'thumbs' },
+    _react2.default.createElement('i', { className: checkRating('up'), onClick: function onClick() {
+        return toggleRating('up');
+      } }),
+    _react2.default.createElement('i', { className: checkRating('down'), onClick: function onClick() {
+        return toggleRating('down');
+      } })
   );
 };
 
 exports.default = Thumbs;
+
+/***/ }),
+/* 238 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.receiveRating = exports.fetchRating = exports.deleteRating = exports.updateRating = exports.createRating = exports.RECEIVE_RATING = undefined;
+
+var _ratings_api_util = __webpack_require__(239);
+
+var APIUtil = _interopRequireWildcard(_ratings_api_util);
+
+function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+
+var RECEIVE_RATING = exports.RECEIVE_RATING = 'RECEIVE_RATING';
+
+var createRating = exports.createRating = function createRating(rating) {
+  return function (dispatch) {
+    return APIUtil.createRating(rating).then(function (rating) {
+      return dispatch(receiveRating(rating));
+    });
+  };
+};
+
+var updateRating = exports.updateRating = function updateRating(rating) {
+  return function (dispatch) {
+    return APIUtil.updateRating(rating).then(function (rating) {
+      return dispatch(receiveRating(rating));
+    });
+  };
+};
+
+var deleteRating = exports.deleteRating = function deleteRating(id) {
+  return function (dispatch) {
+    return APIUtil.deleteRating(id).then(function () {
+      return dispatch(receiveRating({ rating: null }));
+    });
+  };
+};
+
+var fetchRating = exports.fetchRating = function fetchRating(params) {
+  return function (dispatch) {
+    return APIUtil.fetchRating(params).then(function (rating) {
+      return dispatch(receiveRating(rating));
+    }, function (err) {
+      return dispatch(receiveRating({ rating: null }));
+    });
+  };
+};
+
+var receiveRating = exports.receiveRating = function receiveRating(rating) {
+  return {
+    type: RECEIVE_RATING,
+    rating: rating
+  };
+};
+
+/***/ }),
+/* 239 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var createRating = exports.createRating = function createRating(rating) {
+  debugger;
+  return $.ajax({
+    method: 'POST',
+    url: '/api/book_ratings',
+    data: rating
+  });
+};
+
+var updateRating = exports.updateRating = function updateRating(params) {
+  return $.ajax({
+    method: 'PUT',
+    url: '/api/book_ratings/' + params.id,
+    data: params
+  });
+};
+
+var deleteRating = exports.deleteRating = function deleteRating(id) {
+  return $.ajax({
+    method: 'DELETE',
+    url: '/api/book_ratings/' + id
+  });
+};
+
+var fetchRating = exports.fetchRating = function fetchRating(params) {
+  return $.ajax({
+    method: 'GET',
+    url: '/api/book_ratings',
+    data: params
+  });
+};
+
+/***/ }),
+/* 240 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _reactRedux = __webpack_require__(50);
+
+var _rating_actions = __webpack_require__(238);
+
+var _thumbs = __webpack_require__(237);
+
+var _thumbs2 = _interopRequireDefault(_thumbs);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mapStateToProps = function mapStateToProps(_ref) {
+  var bookDetail = _ref.bookDetail,
+      session = _ref.session;
+  return {
+    bookId: bookDetail.book.id,
+    userId: session.currentUser.id,
+    bookRating: bookDetail.bookRating
+  };
+};
+
+var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+  return {
+    createRating: function createRating(params) {
+      return dispatch((0, _rating_actions.createRating)(params));
+    },
+    updateRating: function updateRating(params) {
+      return dispatch((0, _rating_actions.updateRating)(params));
+    },
+    deleteRating: function deleteRating(id) {
+      return dispatch((0, _rating_actions.deleteRating)(id));
+    }
+  };
+};
+
+exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_thumbs2.default);
 
 /***/ })
 /******/ ]);

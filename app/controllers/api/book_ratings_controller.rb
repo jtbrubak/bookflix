@@ -1,27 +1,38 @@
 class Api::BookRatingsController < ApplicationController
+  def index
+    @book_rating = BookRating.find_by(book_id: params[:book_id], user_id: params[:user_id])
+    if @book_rating
+      render "api/book_ratings/show"
+    else
+      render json: { rating: nil, id: nil }
+    end
+  end
+
   def create
     @book_rating = BookRating.new(book_rating_params)
-    @user = User.find(@book_rating.user_id)
     if @book_rating.save
-      render "api/session/show"
+      render "api/book_ratings/show"
     else
       render json: @book_rating.errors.full_messages, status: 422
     end
   end
 
   def destroy
-    @book_rating = BookRating.find_by(book_rating_params)
-    @user = User.find(@book_rating.user_id)
+    @book_rating = BookRating.find(params[:id])
     if @book_rating.destroy
-      render "api/session/show"
+      render "api/book_ratings/show"
     else
       render json: ["Not found"], status: 404
     end
   end
 
   def update
-    @book_rating = BookRating.find(params[:book_id])
-    @user = User.find(params[:user_id])
+    @book_rating = BookRating.find(params[:id])
+    if @book_rating.update(book_rating_params)
+      render "api/book_ratings/show"
+    else
+      render json: ["Not found"], status: 404
+    end
   end
 
   private
