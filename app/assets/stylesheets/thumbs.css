@@ -1,0 +1,19 @@
+.thumbs {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  width: 65px;
+}
+
+.thumbs i {
+  font-size: 16px;
+  border: 2px solid white;
+  border-radius: 20px;
+  padding: 5px;
+}
+
+.thumbs i:hover {
+  border: 2px solid red;
+  color: red;
+  cursor: pointer;
+}

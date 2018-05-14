@@ -32216,10 +32216,12 @@ var _book_detail2 = _interopRequireDefault(_book_detail);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var mapStateToProps = function mapStateToProps(_ref, ownProps) {
-  var bookDetail = _ref.bookDetail;
+  var bookDetail = _ref.bookDetail,
+      session = _ref.session;
   return {
     id: parseInt(ownProps.params.id),
-    bookDetail: bookDetail
+    bookDetail: bookDetail,
+    currentUser: session.currentUser
   };
 };
 
@@ -32250,6 +32252,10 @@ var _react = __webpack_require__(1);
 
 var _react2 = _interopRequireDefault(_react);
 
+var _thumbs = __webpack_require__(237);
+
+var _thumbs2 = _interopRequireDefault(_thumbs);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -32268,49 +32274,50 @@ var BookDetail = function (_React$Component) {
   }
 
   _createClass(BookDetail, [{
-    key: "componentWillMount",
+    key: 'componentWillMount',
     value: function componentWillMount() {
       this.props.fetchBookDetail(this.props.id);
     }
   }, {
-    key: "render",
+    key: 'render',
     value: function render() {
       return _react2.default.createElement(
-        "div",
-        { id: "book-detail" },
+        'div',
+        { id: 'book-detail' },
         _react2.default.createElement(
-          "div",
-          { id: "book-detail-left" },
-          _react2.default.createElement("img", { src: this.props.bookDetail.picture_url })
+          'div',
+          { id: 'book-detail-left' },
+          _react2.default.createElement('img', { src: this.props.bookDetail.picture_url })
         ),
         _react2.default.createElement(
-          "div",
-          { id: "book-detail-right" },
+          'div',
+          { id: 'book-detail-right' },
           _react2.default.createElement(
-            "span",
+            'span',
             null,
             this.props.bookDetail.title
           ),
           _react2.default.createElement(
-            "span",
+            'span',
             null,
             this.props.bookDetail.author
           ),
           _react2.default.createElement(
-            "span",
+            'span',
             null,
             this.props.bookDetail.year
           ),
           _react2.default.createElement(
-            "p",
+            'p',
             null,
             this.props.bookDetail.description
           ),
           _react2.default.createElement(
-            "a",
+            'a',
             { href: this.props.bookDetail.pdf_link },
-            "READ"
-          )
+            'READ'
+          ),
+          _react2.default.createElement(_thumbs2.default, { bookId: this.props.id, user: this.props.currentUser })
         )
       );
     }
@@ -32320,6 +32327,36 @@ var BookDetail = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = BookDetail;
+
+/***/ }),
+/* 237 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Thumbs = undefined;
+
+var _react = __webpack_require__(1);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Thumbs = exports.Thumbs = function Thumbs(props) {
+
+  return _react2.default.createElement(
+    "div",
+    { className: "thumbs" },
+    _react2.default.createElement("i", { className: "fa fa-thumbs-up" }),
+    _react2.default.createElement("i", { className: "fa fa-thumbs-down" })
+  );
+};
+
+exports.default = Thumbs;
 
 /***/ })
 /******/ ]);

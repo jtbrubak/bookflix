@@ -1,4 +1,5 @@
 import React from 'react';
+import Thumbs from '../thumbs/thumbs';
 
 class BookDetail extends React.Component {
 
@@ -22,6 +23,7 @@ class BookDetail extends React.Component {
           <span>{this.props.bookDetail.year}</span>
           <p>{this.props.bookDetail.description}</p>
           <a href={this.props.bookDetail.pdf_link}>READ</a>
+          <Thumbs bookId={this.props.id} user={this.props.currentUser} />
         </div>
       </div>
     );
