@@ -26,7 +26,6 @@ const Thumbs = (props) => {
     } else if (props.bookRating.rating === rating_ids[direction]) {
       props.deleteRating(props.bookRating.id);
     } else {
-      debugger
       var params = buildParams(direction);
       params.id = props.bookRating.id;
       props.updateRating(params);

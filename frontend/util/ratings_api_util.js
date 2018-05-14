@@ -1,5 +1,4 @@
 export const createRating = (rating) => {
-  debugger
   return $.ajax({
     method: 'POST',
     url: '/api/book_ratings',
